@@ -61,10 +61,9 @@ export const routes = [
   },
   {
     method: "PUT",
-    path: buildRoutePath("/task/:id"),
+    path: buildRoutePath("/task/updated"),
     handler: (req, res) => {
-      const { id } = req.params;
-      const { name, description } = req.body;
+      const { name, description, id } = req.body;
 
       if (!id) {
         return res.writeHead(404).end(
@@ -93,6 +92,7 @@ export const routes = [
       database.update("task", id, {
         name,
         description,
+        completed_at: null,
         updated_at: new Date(),
       });
 
@@ -101,10 +101,9 @@ export const routes = [
   },
   {
     method: "PATCH",
-    path: buildRoutePath("/task/:id/complete"),
+    path: buildRoutePath("/task/complete"),
     handler: (req, res) => {
-      const { id } = req.params;
-      const { completed_at } = req.body;
+      const { completed_at, id } = req.body;
 
       if (!id) {
         return res.writeHead(404).end(
@@ -116,6 +115,7 @@ export const routes = [
 
       database.update("task", id, {
         completed_at,
+        updated_at: new Date(),
       });
 
       return res.writeHead(204).end();
